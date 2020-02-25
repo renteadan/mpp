@@ -7,6 +7,5 @@ class MainTest {
     void sum() {
         Main main = new Main();
         assertEquals(main.sum(3,4), 7);
-        assertEquals(main.sum(3,4), 8);
     }
 }
