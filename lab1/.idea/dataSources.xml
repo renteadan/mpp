@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="mpp@localhost" uuid="326406ae-63a7-4452-806d-d64f1b7537b2">
-      <driver-ref>mysql.8</driver-ref>
+    <data-source source="LOCAL" name="ygfxpsvi@rogue.db.elephantsql.com" uuid="bb421fe8-c4ab-4333-ba47-31e0398a1a70">
+      <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/mpp</jdbc-url>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://rogue.db.elephantsql.com:5432/ygfxpsvi</jdbc-url>
     </data-source>
   </component>
 </project>

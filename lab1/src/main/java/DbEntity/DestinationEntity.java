@@ -1,16 +1,16 @@
-package Domain;
+package DbEntity;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "destination_entity")
+@Table(name = "destination_entity", schema = "mpp")
 public class DestinationEntity {
   private int id;
   private String name;
 
   @Column(name = "id", unique = true)
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   public int getId() {
     return id;
   }

@@ -1,37 +1,50 @@
 package Gateway;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class BaseGateway {
 
   private Connection conn;
 
-  public Connection getConn() {
+  private void setConn() {
     if (conn != null) {
-      return conn;
+      return;
     }
     try {
       conn =
-          DriverManager.getConnection("jdbc:mysql://localhost/mpp?" +
-              "user=root&password=admin");
+          DriverManager.getConnection("jdbc:postgresql://rogue.db.elephantsql.com:5432/ygfxpsvi", "ygfxpsvi", "WCuZM01Z1gO8SKmGUqRcJviIcmP59pwy");
+      conn.setSchema("mpp");
     } catch (SQLException ex) {
       // handle any errors
       System.out.println("SQLException: " + ex.getMessage());
       System.out.println("SQLState: " + ex.getSQLState());
       System.out.println("VendorError: " + ex.getErrorCode());
     }
-    return conn;
   }
 
   public void closeConnection() {
     if (conn != null)  {
       try {
         conn.close();
+        conn = null;
       } catch (SQLException e) {
         e.printStackTrace();
       }
     }
+  }
+
+  public ResultSet executeQuery(String query) throws SQLException {
+    setConn();
+    Statement st = conn.createStatement();
+    ResultSet rs = st.executeQuery(query);
+    closeConnection();
+    return rs;
+  }
+
+  public void execute(String query) throws SQLException {
+    setConn();
+    Statement st = conn.createStatement();
+    st.execute(query);
+    closeConnection();
   }
 }
