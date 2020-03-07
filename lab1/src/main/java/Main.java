@@ -1,10 +1,14 @@
 
-import Gateway.BaseGateway;
+import Domain.Destination;
+import Gateway.DestinationGateway;
+import Logger.LoggerManager;
 
 
 import java.sql.*;
 
 public class Main {
+
+  private static LoggerManager logger = new LoggerManager(Main.class);
   public static void main(String[] args) throws SQLException {
     jdbc();
   }
@@ -13,20 +17,21 @@ public class Main {
     return a+b;
   }
 
-  public static void sqlTest()  {
-    BaseGateway gt = new BaseGateway();
-    ResultSet rs;
+  public static void sqlTest() {
+    DestinationGateway dest = new DestinationGateway();
+    ResultSet rs = dest.findAll();
+    Destination destination = new Destination("cluj");
+    dest.insert(destination);
     try {
-      rs = gt.executeQuery("SELECT * from destination");
-//      gt.execute("INSERT INTO destination(name) values ('Bucuresti')");
-      while(rs.next()) {
-        System.out.println(rs.getString(2));
+      while (rs.next()) {
+        System.out.print(rs.getString("name") + " ");
+        System.out.println(rs.getInt("id"));
+        dest.deleteById(rs.getInt("id"));
       }
-    } catch (SQLException e) {
-      e.printStackTrace();
+    } catch (Exception e) {
+      logger.error(e);
     }
   }
-
   public static void jdbc() {
     sqlTest();
   }
