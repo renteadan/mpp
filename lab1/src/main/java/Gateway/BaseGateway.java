@@ -1,23 +1,25 @@
 package Gateway;
 
 import java.sql.*;
+import java.sql.Statement;
 
 import Domain.BaseEntity;
 import Logger.LoggerManager;
 import Tools.PropertyLoader;
-import org.jooq.DSLContext;
-import org.jooq.SQLDialect;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 
 class BaseGateway {
 
+  private Field<Integer> ID = DSL.field("id", Integer.class);
   private LoggerManager logger = new LoggerManager(BaseGateway.class);
-
+  private DSLContext context;
   private Connection conn;
   private String tableName;
   protected BaseGateway(String tableName) {
     this.tableName = tableName;
     setConn();
+    context = DSL.using(conn, SQLDialect.POSTGRES);
   }
   private void setConn() {
     if (conn != null) {
@@ -69,26 +71,24 @@ class BaseGateway {
     }
   }
 
-  public <E extends BaseEntity> E insert(E entity, DataPacketConverter<E> converter) {
-    String sql = String.format("insert into %s values;", tableName);
-    DSLContext ctx = DSL.using(conn, SQLDialect.POSTGRES);
+  public <E extends BaseEntity> E insert(E entity, InsertQuery<?> sql) {
     try {
-      PreparedStatement preparedStatement = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-      converter.toDataPacket(entity, preparedStatement);
-      int rowsAffected = preparedStatement.executeUpdate();
-      if (rowsAffected == 0) {
-        logger.error(new SQLException(String.format("Inserting %s failed", entity.getClass().getCanonicalName())));
-        return null;
-      }
-      try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-        if(generatedKeys.next()) {
-          entity.setId(generatedKeys.getInt(1));
-        } else {
-          logger.error(new SQLException(String.format("Inserting %s failed", entity.getClass().getCanonicalName())));
-          return null;
-        }
-      }
+      sql.setReturning(ID);
+      context.execute(sql);
+      Result<?> result = sql.getResult();
+      entity.setId(result.getValue(0,ID));
       return entity;
+    } catch (Exception e) {
+      logger.error(e);
+      return null;
+    }
+  }
+
+  public <E extends BaseEntity> Result<?> update(E entity, UpdateQuery<?> sql) {
+    try {
+      sql.addConditions(DSL.condition("id = ?", entity.getId()));
+      context.execute(sql);
+      return sql.getResult();
     } catch (Exception e) {
       logger.error(e);
       return null;

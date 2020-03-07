@@ -20,17 +20,19 @@ public class Main {
   public static void sqlTest() {
     DestinationGateway dest = new DestinationGateway();
     ResultSet rs = dest.findAll();
-    Destination destination = new Destination("cluj");
-    dest.insert(destination);
-    try {
-      while (rs.next()) {
-        System.out.print(rs.getString("name") + " ");
-        System.out.println(rs.getInt("id"));
-        dest.deleteById(rs.getInt("id"));
-      }
-    } catch (Exception e) {
-      logger.error(e);
-    }
+    Destination destination = new Destination(18, "satu mare");
+
+    Destination destination2 = dest.update(destination);
+    System.out.println(destination2.toString());
+//    try {
+//      while (rs.next()) {
+//        System.out.print(rs.getString("name") + " ");
+//        System.out.println(rs.getInt("id"));
+//        dest.deleteById(rs.getInt("id"));
+//      }
+//    } catch (Exception e) {
+//      logger.error(e);
+//    }
   }
   public static void jdbc() {
     sqlTest();
