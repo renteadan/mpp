@@ -43,7 +43,7 @@ class BaseGateway {
     return statement.executeQuery();
   }
 
-  public ResultSet findById(int id) {
+  protected ResultSet findById(int id) {
     String sql = String.format("select * from %s where id = ?;", tableName);
     try {
       PreparedStatement statement = conn.prepareStatement(sql);
@@ -55,23 +55,22 @@ class BaseGateway {
     }
   }
 
-  public boolean executePreparedStatement(PreparedStatement statement) throws SQLException {
-    return statement.execute();
+  public void executePreparedStatement(PreparedStatement statement) throws SQLException {
+    statement.execute();
   }
 
-  public boolean deleteById(int id) {
+  public void deleteById(int id) {
     String sql = String.format("delete from %s where id = ?;", tableName);
     try {
       PreparedStatement statement = conn.prepareStatement(sql);
       statement.setInt(1, id);
-      return executePreparedStatement(statement);
+      executePreparedStatement(statement);
     } catch (Exception e) {
       logger.error(e);
-      return false;
     }
   }
 
-  public <E extends BaseEntity> E insert(E entity, InsertQuery<?> sql) {
+  protected  <E extends BaseEntity> E insert(E entity, InsertQuery<?> sql) {
     try {
       sql.setReturning(ID);
       context.execute(sql);
@@ -84,7 +83,7 @@ class BaseGateway {
     }
   }
 
-  public <E extends BaseEntity> Result<?> update(E entity, UpdateQuery<?> sql) {
+  protected  <E extends BaseEntity> Result<?> update(E entity, UpdateQuery<?> sql) {
     try {
       sql.addConditions(DSL.condition("id = ?", entity.getId()));
       context.execute(sql);
