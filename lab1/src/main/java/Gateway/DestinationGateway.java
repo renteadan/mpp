@@ -1,51 +1,73 @@
 package Gateway;
 
 import Domain.Destination;
-import Logger.LoggerManager;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.Vector;
 
-public class DestinationGateway extends BaseGateway {
 
-  private LoggerManager logger = new LoggerManager(DestinationGateway.class);
-  private static String tableName = "destination";
-  private Field<String> NAME = DSL.field("name", String.class);
-  private Table<?> TABLE = DSL.table(tableName);
+public class DestinationGateway extends BaseGateway implements GatewayInterface<Destination> {
+
+  private Table<?> TABLE = Destination.TABLE;
   private DSLContext ctx = DSL.using(SQLDialect.POSTGRES);
   public DestinationGateway() {
-    super(tableName);
+    super();
   }
 
   public Destination insert(Destination destination) {
     InsertQuery<?> insertQuery = ctx.insertQuery(TABLE);
-    insertQuery.addValue(NAME, destination.getName());
-    return super.insert(destination, insertQuery);
+    insertQuery.addValue(Destination.NAME, destination.getName());
+    insertQuery.setReturning(Destination.ID);
+    Result<?> result = super.insertJooq(insertQuery);
+    destination.setId(result.getValue(0, Destination.ID));
+    return destination;
   }
 
   public Destination update(Destination destination) {
     UpdateQuery<?> updateQuery = ctx.updateQuery(TABLE);
-    updateQuery.addValue(NAME, destination.getName());
-    updateQuery.setReturning(NAME);
-    Result<?> result = super.update(destination, updateQuery);
-    if(result == null)
-      return null;
-    destination.setName(result.getValue(0, NAME));
+    updateQuery.addValue(Destination.NAME, destination.getName());
+    updateQuery.setReturning(Destination.NAME);
+    updateQuery.addConditions(DSL.condition("id = ?", destination.getId()));
+    Result<?> result = super.updateJooq(updateQuery);
+    destination.setName(result.getValue(0, Destination.NAME));
     return destination;
   }
 
   public Destination find(int id) {
-    ResultSet result = super.findById(id);
-    if (result == null)
-      return null;
-    try {
-      if(result.next()) return new Destination(result.getInt("id"), result.getString("name"));
-      else return null;
-    } catch (SQLException e) {
-      logger.error(e);
-      return null;
+    SelectQuery<?> selectQuery = ctx.selectQuery(TABLE);
+    selectQuery.addConditions(DSL.condition("id = ?", id));
+    Result<?> result = super.findJooq(selectQuery);
+    if(result.isNotEmpty())
+      return new Destination(result.getValue(0, Destination.ID), result.getValue(0, Destination.NAME));
+    return null;
+  }
+
+  public void delete(Destination destination) {
+    DeleteQuery<?> deleteQuery = ctx.deleteQuery(TABLE);
+    deleteQuery.addConditions(DSL.condition("id = ?", destination.getId()));
+    super.deleteJooq(deleteQuery);
+  }
+
+  public Vector<Destination> findAll() {
+    SelectQuery<?> selectQuery = ctx.selectQuery(TABLE);
+    Result<?> result = super.findJooq(selectQuery);
+    Vector<Destination> destinations = new Vector<>();
+    for(Record row: result) {
+      destinations.add(new Destination(row));
     }
+    return destinations;
+  }
+
+  public Vector<Destination> findLastN(int n) {
+    SelectQuery<?> selectQuery = ctx.selectQuery(TABLE);
+    selectQuery.addOrderBy(Destination.ID.desc());
+    selectQuery.addLimit(n);
+    Result<?> result = super.findJooq(selectQuery);
+    Vector<Destination> destinations = new Vector<>();
+    for(Record row: result) {
+      destinations.add(new Destination(row));
+    }
+    return destinations;
   }
 }

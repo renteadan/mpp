@@ -14,11 +14,11 @@ public class ConnectionFactory {
   public static Connection getConnection() throws SQLException {
     if (dataSource == null) {
       dataSource = new BasicDataSource();
-      dataSource.setUrl(PropertyLoader.getProperty("sql_url"));
-      dataSource.setUsername(PropertyLoader.getProperty("username"));
-      dataSource.setPassword(PropertyLoader.getProperty("password"));
-      dataSource.setDefaultSchema(PropertyLoader.getProperty("logs_schema"));
-      dataSource.setDriverClassName(PropertyLoader.getProperty("postgresql_driver"));
+      dataSource.setUrl(PropertyLoader.SQL_URL);
+      dataSource.setUsername(PropertyLoader.USERNAME);
+      dataSource.setPassword(PropertyLoader.PASSWORD);
+      dataSource.setDefaultSchema(PropertyLoader.LOGS_SCHEMA);
+      dataSource.setDriverClassName(PropertyLoader.POSTGRESQL_DRIVER);
     }
     return dataSource.getConnection();
   }
