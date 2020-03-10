@@ -29,6 +29,9 @@ class DestinationGatewayTest {
       loggerManager.error(new Exception("Not all test records were deleted!"));
       fail();
     }
+    else {
+      loggerManager.info(String.format("%s tests passed", DestinationGatewayTest.class.getCanonicalName()));
+    }
   }
   @Test
   void find() {

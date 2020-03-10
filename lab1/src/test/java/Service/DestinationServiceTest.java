@@ -36,6 +36,8 @@ class DestinationServiceTest {
     if (currentCount != initialCount) {
       logger.error(new Exception("Not all test records were deleted!"));
       fail();
+    } else {
+      logger.info(String.format("%s tests passed", DestinationServiceTest.class.getCanonicalName()));
     }
   }
 

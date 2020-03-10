@@ -10,6 +10,10 @@ public class LoggerManager {
     logger.error(e.getClass().getCanonicalName(), e);
   }
 
+  public void info(String info) {
+    logger.info(info);
+  }
+
   public LoggerManager(Class<?> instanceClass) {
     logger = LogManager.getLogger(instanceClass);
   }
