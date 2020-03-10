@@ -34,4 +34,5 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.7.0'
     compile group: 'org.postgresql', name: 'postgresql', version: '42.2.10'
     compile group: 'org.jooq', name: 'jooq', version: '3.13.1'
+    compile group: 'commons-dbutils', name: 'commons-dbutils', version: '1.7'
 }

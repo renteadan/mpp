@@ -1,6 +1,5 @@
 package Tools;
-
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Properties;
 import Logger.LoggerManager;
 public class PropertyLoader {
@@ -18,7 +17,7 @@ public class PropertyLoader {
       return;
     props = new Properties();
     try {
-      FileInputStream inputStream = new FileInputStream("src/main/resources/config.properties");
+      InputStream inputStream = PropertyLoader.class.getClassLoader().getResourceAsStream("config.properties");
       props.load(inputStream);
     } catch (Exception e) {
       logger.error(e);

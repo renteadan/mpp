@@ -9,9 +9,10 @@ import java.util.Objects;
 
 public class Destination extends BaseEntity {
   private String name;
-  public static Field<String> NAME = DSL.field("name", String.class);
   private static String tableName = "destination";
-  public static Table<?>TABLE = DSL.table(tableName);
+  public static Table<?> TABLE = DSL.table(tableName);
+  public static Field<Integer> ID = DSL.field("id", Integer.class);
+  public static Field<String> NAME = DSL.field("name", String.class);
   public Destination(int id, String name) {
     super(id);
     this.name = name;
