@@ -1,6 +1,7 @@
 package Service;
 
 import Domain.Destination;
+import Errors.SQLErrorNoEntityFound;
 import Logger.LoggerManager;
 import net.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.AfterAll;
@@ -42,7 +43,7 @@ class DestinationServiceTest {
   }
 
   @Test
-  void find() {
+  void find() throws SQLErrorNoEntityFound {
     Destination destination = new Destination(RandomString.make(10));
     destination = service.insert(destination);
     allRecords.add(destination);
@@ -63,8 +64,9 @@ class DestinationServiceTest {
     for(Destination d:destinations) {
       service.delete(d);
       allRecords.remove(d);
-      d = service.find(d.getId());
-      assertNull(d);
+      assertThrows(SQLErrorNoEntityFound.class, () -> {
+        service.find(d.getId());
+      });
     }
   }
 

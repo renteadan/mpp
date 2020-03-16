@@ -1,6 +1,7 @@
 package Service;
 
 import Domain.BaseEntity;
+import Errors.SQLErrorNoEntityFound;
 import Gateway.GatewayInterface;
 
 import java.util.Vector;
@@ -13,7 +14,7 @@ public class BaseService<E extends BaseEntity> implements ServiceInterface<E> {
     this.gateway = gateway;
   }
   @Override
-  public E find(int id) {
+  public E find(int id) throws SQLErrorNoEntityFound {
     return gateway.find(id);
   }
 

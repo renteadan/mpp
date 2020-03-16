@@ -1,6 +1,7 @@
 package Gateway;
 
 import Domain.Destination;
+import Errors.SQLErrorNoEntityFound;
 import Logger.LoggerManager;
 import Service.BaseService;
 import net.bytebuddy.utility.RandomString;
@@ -38,19 +39,28 @@ class DestinationGatewayTest {
     Destination dest = new Destination("Test1");
     dest = gateway.insert(dest);
     Destination dest2;
-    dest2 = gateway.find(dest.getId());
-    assertEquals(dest.getName(), dest2.getName());
+    try {
+      dest2 = gateway.find(dest.getId());
+      assertEquals(dest.getName(), dest2.getName());
+    } catch (SQLErrorNoEntityFound ignored) {
+      fail();
+    }
     gateway.delete(dest);
-    assertNull(gateway.find(dest.getId()));
+    Destination finalDest = dest;
+    assertThrows(SQLErrorNoEntityFound.class, () -> {
+      gateway.find(finalDest.getId());
+    });
   }
 
   @Test
-  void deleteById() {
+  void delete() {
     Destination dest = new Destination("Test1");
     dest = gateway.insert(dest);
     gateway.delete(dest);
-    Destination destination = gateway.find(dest.getId());
-    assertNull(destination);
+    Destination finalDest = dest;
+    assertThrows(SQLErrorNoEntityFound.class, () -> {
+      gateway.find(finalDest.getId());
+    });
   }
 
   @Test
@@ -65,7 +75,9 @@ class DestinationGatewayTest {
     }
     for (Destination d:insertedDestinations) {
       gateway.delete(d);
-      assertNull(gateway.find(d.getId()));
+      assertThrows(SQLErrorNoEntityFound.class, () -> {
+        gateway.find(d.getId());
+      });
     }
   }
 
@@ -74,12 +86,23 @@ class DestinationGatewayTest {
     Destination dest = new Destination("Test1");
     dest = gateway.insert(dest);
     Destination dest2;
-    assertEquals(gateway.find(dest.getId()).getName(), "Test1");
+    try {
+      assertEquals(gateway.find(dest.getId()).getName(), "Test1");
+    } catch (SQLErrorNoEntityFound ignored) {
+      fail();
+    }
     dest.setName("Test2");
     dest2 = gateway.update(dest);
-    assertEquals(gateway.find(dest.getId()).getName(), "Test2");
+    try {
+      assertEquals(gateway.find(dest.getId()).getName(), "Test2");
+    } catch (SQLErrorNoEntityFound ignored) {
+      fail();
+    }
     assertEquals(dest2.getName(), dest.getName());
     gateway.delete(dest);
-    assertNull(gateway.find(dest.getId()));
+    Destination finalDest = dest;
+    assertThrows(SQLErrorNoEntityFound.class, () -> {
+      gateway.find(finalDest.getId());
+    });
   }
 }

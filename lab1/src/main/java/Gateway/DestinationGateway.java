@@ -1,6 +1,7 @@
 package Gateway;
 
 import Domain.Destination;
+import Errors.SQLErrorNoEntityFound;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 
@@ -34,13 +35,13 @@ public class DestinationGateway extends BaseGateway implements GatewayInterface<
     return destination;
   }
 
-  public Destination find(int id) {
+  public Destination find(int id) throws SQLErrorNoEntityFound {
     SelectQuery<?> selectQuery = ctx.selectQuery(TABLE);
     selectQuery.addConditions(DSL.condition("id = ?", id));
     Result<?> result = super.findJooq(selectQuery);
-    if(result.isNotEmpty())
-      return new Destination(result.getValue(0, Destination.ID), result.getValue(0, Destination.NAME));
-    return null;
+    if(result.isEmpty())
+      throw new SQLErrorNoEntityFound("No destination was found!");
+    return new Destination(result.getValue(0, Destination.ID), result.getValue(0, Destination.NAME));
   }
 
   public void delete(Destination destination) {
