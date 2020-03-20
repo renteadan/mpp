@@ -6,11 +6,11 @@ import Gateway.GatewayInterface;
 
 import java.util.Vector;
 
-public class BaseService<E extends BaseEntity> implements ServiceInterface<E> {
+public class BaseService<E extends BaseEntity, G extends GatewayInterface<E>> implements ServiceInterface<E> {
 
-  private GatewayInterface<E> gateway;
+  protected G gateway;
 
-  protected BaseService(GatewayInterface<E> gateway) {
+  protected BaseService(G gateway) {
     this.gateway = gateway;
   }
   @Override
@@ -40,5 +40,9 @@ public class BaseService<E extends BaseEntity> implements ServiceInterface<E> {
 
   public Vector<E> findLastN(int n) {
     return gateway.findLastN(n);
+  }
+
+  public int count() {
+    return gateway.findAll().size();
   }
 }

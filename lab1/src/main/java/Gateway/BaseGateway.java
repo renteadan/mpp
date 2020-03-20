@@ -5,7 +5,7 @@ import Tools.PropertyLoader;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 
-class BaseGateway {
+public class BaseGateway {
 
   private LoggerManager logger = new LoggerManager(BaseGateway.class);
   private DSLContext context;

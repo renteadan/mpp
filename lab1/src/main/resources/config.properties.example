@@ -1,0 +1,8 @@
+
+
+sql_url = jdbc:postgresql://rogue.db.elephantsql.com:5432/ygfxpsvi
+username = ygfxpsvi
+password = WCuZM01Z1gO8SKmGUqRcJviIcmP59pwy
+data_schema = mpp
+logs_schema = logs
+postgresql_driver = org.postgresql.Driver

@@ -32,11 +32,29 @@ public class TripGateway extends BaseGateway implements GatewayInterface<Trip> {
     return new Trip(result.getValue(Trip.ID), result.getValue(Trip.DEPARTURE), destination);
   }
 
+  private Vector<Trip> createTrips(Result<?> result) {
+    Vector<Trip> trips = new Vector<>();
+    for(Record row: result) {
+      try {
+        trips.add(createTrip(row));
+      } catch (SQLErrorNoEntityFound ignored) {
+      }
+    }
+    return trips;
+  }
+
   @Override
   public void delete(Trip entity) {
     DeleteQuery<?> deleteQuery = ctx.deleteQuery(TABLE);
     deleteQuery.addConditions(DSL.condition("id = ?", entity.getId()));
     super.deleteJooq(deleteQuery);
+  }
+
+  public Vector<Trip> getTripsByDestination(Destination destination) {
+    SelectQuery<?> selectQuery = ctx.selectQuery(TABLE);
+    selectQuery.addConditions(DSL.condition("? = ?", Trip.DESTINATION_ID, destination.getId()));
+    Result<?> result = super.findJooq(selectQuery);
+    return createTrips(result);
   }
 
   @Override
@@ -73,14 +91,7 @@ public class TripGateway extends BaseGateway implements GatewayInterface<Trip> {
   public Vector<Trip> findAll() {
     SelectQuery<?> selectQuery = ctx.selectQuery(TABLE);
     Result<?> result = super.findJooq(selectQuery);
-    Vector<Trip> trips = new Vector<>();
-    for(Record row: result) {
-      try {
-        trips.add(createTrip(row));
-      } catch (SQLErrorNoEntityFound ignored) {
-      }
-    }
-    return trips;
+    return createTrips(result);
   }
 
   @Override
@@ -89,13 +100,6 @@ public class TripGateway extends BaseGateway implements GatewayInterface<Trip> {
     selectQuery.addOrderBy(Trip.ID.desc());
     selectQuery.addLimit(n);
     Result<?> result = super.findJooq(selectQuery);
-    Vector<Trip> trips = new Vector<>();
-    for(Record row: result) {
-      try {
-        trips.add(createTrip(row));
-      } catch (SQLErrorNoEntityFound ignored) {
-      }
-    }
-    return trips;
+    return createTrips(result);
   }
 }
