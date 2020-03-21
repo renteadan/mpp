@@ -2,6 +2,7 @@ package Service;
 
 import Domain.Destination;
 import Errors.SQLErrorNoEntityFound;
+import Errors.ValidationError;
 import Logger.LoggerManager;
 import net.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.AfterAll;
@@ -45,28 +46,36 @@ class DestinationServiceTest {
   @Test
   void find() throws SQLErrorNoEntityFound {
     Destination destination = new Destination(RandomString.make(10));
-    destination = service.insert(destination);
-    allRecords.add(destination);
-    Destination destination1 = service.find(destination.getId());
-    assertEquals(destination, destination1);
+    try {
+      destination = service.insert(destination);
+      allRecords.add(destination);
+      Destination destination1 = service.find(destination.getId());
+      assertEquals(destination, destination1);
+    } catch (ValidationError validationError) {
+      fail();
+    }
+
   }
 
   @Test
   void delete() {
     Vector<Destination> destinations = new Vector<>();
-    for(int i=0;i<20;i++) {
-      Destination destination = new Destination(RandomString.make(20));
-      destination = service.insert(destination);
-      destinations.add(destination);
-      allRecords.add(destination);
-    }
-
-    for(Destination d:destinations) {
-      service.delete(d);
-      allRecords.remove(d);
-      assertThrows(SQLErrorNoEntityFound.class, () -> {
-        service.find(d.getId());
-      });
+    try {
+      for(int i=0;i<20;i++) {
+        Destination destination = new Destination(RandomString.make(20));
+        destination = service.insert(destination);
+        destinations.add(destination);
+        allRecords.add(destination);
+      }
+      for (Destination d : destinations) {
+        service.delete(d);
+        allRecords.remove(d);
+        assertThrows(SQLErrorNoEntityFound.class, () -> {
+          service.find(d.getId());
+        });
+      }
+    } catch (ValidationError ignored) {
+      fail();
     }
   }
 
@@ -74,16 +83,20 @@ class DestinationServiceTest {
   void update() {
     Vector<Destination> destinations = new Vector<>();
     Vector<Destination> destinations1 = new Vector<>();
-    for(int i=0;i<20;i++) {
-      Destination destination = new Destination(RandomString.make(20));
-      destination = service.insert(destination);
-      destinations.add(destination);
-      allRecords.add(destination);
-    }
-    for(Destination d:destinations) {
-      Destination destination = new Destination(d.getId(), RandomString.make(20));
-      destination = service.update(destination);
-      destinations1.add(destination);
+    try {
+      for(int i=0;i<20;i++) {
+        Destination destination = new Destination(RandomString.make(20));
+        destination = service.insert(destination);
+        destinations.add(destination);
+        allRecords.add(destination);
+      }
+      for(Destination d:destinations) {
+        Destination destination = new Destination(d.getId(), RandomString.make(20));
+        destination = service.update(destination);
+        destinations1.add(destination);
+      }
+    } catch (ValidationError ignored) {
+      fail();
     }
     destinations = service.findLastN(20);
     Collections.reverse(destinations);
@@ -93,11 +106,15 @@ class DestinationServiceTest {
   @Test
   void insert() {
     int count = service.count();
-    for(int i=0;i<20;i++) {
-      Destination destination = new Destination(RandomString.make(20));
-      destination = service.insert(destination);
-      allRecords.add(destination);
+    try {
+      for(int i=0;i<20;i++) {
+        Destination destination = new Destination(RandomString.make(20));
+        destination = service.insert(destination);
+        allRecords.add(destination);
+      }
+      assertEquals(count, service.count() - 20);
+    } catch (ValidationError ignored) {
+      fail();
     }
-    assertEquals(count, service.count() - 20);
   }
 }

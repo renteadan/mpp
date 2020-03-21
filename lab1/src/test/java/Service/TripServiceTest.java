@@ -2,6 +2,7 @@ package Service;
 
 import Domain.Destination;
 import Domain.Trip;
+import Errors.ValidationError;
 import Logger.LoggerManager;
 import net.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.AfterAll;
@@ -48,16 +49,20 @@ class TripServiceTest {
   @Test
   void getTripsByDestination() {
     Destination destination = new Destination(RandomString.make(10));
-    destination = destinationService.insert(destination);
-    allRecords.add(destination);
-    Vector<Trip> trips = new Vector<>();
-    for(int i=0;i<10;i++) {
-      Trip trip = new Trip(Timestamp.valueOf(LocalDateTime.now()), destination);
-      trip = service.insert(trip);
-      trips.add(trip);
+    try {
+      destination = destinationService.insert(destination);
+      allRecords.add(destination);
+      Vector<Trip> trips = new Vector<>();
+      for(int i=0;i<10;i++) {
+        Trip trip = new Trip(Timestamp.valueOf(LocalDateTime.now().plusDays(1)), destination);
+        trip = service.insert(trip);
+        trips.add(trip);
+      }
+      Vector<Trip> trips1 = service.getTripsByDestination(destination);
+      Collections.reverse(trips);
+      assertArrayEquals(trips.toArray(), trips1.toArray());
+    } catch (ValidationError validationError) {
+      fail();
     }
-    Vector<Trip> trips1 = service.getTripsByDestination(destination);
-    Collections.reverse(trips);
-    assertArrayEquals(trips.toArray(), trips1.toArray());
   }
 }

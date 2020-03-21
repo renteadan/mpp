@@ -1,4 +1,5 @@
 package Gateway;
+import Domain.Destination;
 import Domain.Reservation;
 import Domain.Trip;
 import Errors.SQLErrorNoEntityFound;
@@ -28,6 +29,17 @@ public class ReservationGateway extends BaseGateway implements GatewayInterface<
   private Reservation createReservation(Record result) throws SQLErrorNoEntityFound {
     Trip trip = tripGateway.find(result.getValue(Reservation.TRIP_ID));
     return new Reservation(result.getValue(Reservation.ID), result.getValue(Reservation.CLIENT_NAME), result.getValue(Reservation.SEATS_NR), trip);
+  }
+
+  private Vector<Reservation> createReservations(Result<?> result) {
+    Vector<Reservation> reservations = new Vector<>();
+    for(Record row: result) {
+      try {
+        reservations.add(createReservation(row));
+      } catch (SQLErrorNoEntityFound ignored) {
+      }
+    }
+    return reservations;
   }
 
   @Override
@@ -74,14 +86,7 @@ public class ReservationGateway extends BaseGateway implements GatewayInterface<
   public Vector<Reservation> findAll() {
     SelectQuery<?> selectQuery = ctx.selectQuery(TABLE);
     Result<?> result = super.findJooq(selectQuery);
-    Vector<Reservation> reservations = new Vector<>();
-    for(Record row: result) {
-      try {
-        reservations.add(createReservation(row));
-      } catch (SQLErrorNoEntityFound ignored) {
-      }
-    }
-    return reservations;
+    return createReservations(result);
   }
 
   @Override
@@ -90,13 +95,13 @@ public class ReservationGateway extends BaseGateway implements GatewayInterface<
     selectQuery.addOrderBy(Reservation.ID.desc());
     selectQuery.addLimit(n);
     Result<?> result = super.findJooq(selectQuery);
-    Vector<Reservation> reservations = new Vector<>();
-    for(Record row: result) {
-      try {
-        reservations.add(createReservation(row));
-      } catch (SQLErrorNoEntityFound ignored) {
-      }
-    }
-    return reservations;
+    return createReservations(result);
+  }
+
+  public Vector<Reservation> getReservationsByTrip(Trip trip) {
+    SelectQuery<?> selectQuery = ctx.selectQuery(TABLE);
+    selectQuery.addConditions(DSL.condition("? = ?", Reservation.TRIP_ID, trip.getId()));
+    Result<?> result = super.findJooq(selectQuery);
+    return createReservations(result);
   }
 }

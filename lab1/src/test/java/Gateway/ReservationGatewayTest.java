@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ReservationGatewayTest {
 
-  private static LoggerManager loggerManager = new LoggerManager(DestinationGatewayTest.class);
+  private static LoggerManager loggerManager = new LoggerManager(ReservationGatewayTest.class);
   private static ReservationGateway gateway = new ReservationGateway();
   private static DestinationGateway destinationGateway = new DestinationGateway();
   private static TripGateway tripGateway = new TripGateway();
@@ -46,7 +46,7 @@ class ReservationGatewayTest {
       fail();
     }
     else {
-      loggerManager.info(String.format("%s tests passed", TripGatewayTest.class.getCanonicalName()));
+      loggerManager.info(String.format("%s tests passed", ReservationGatewayTest.class.getCanonicalName()));
     }
   }
 
@@ -56,7 +56,7 @@ class ReservationGatewayTest {
       Destination dest = new Destination("TestResGateway");
       dest = destinationGateway.insert(dest);
       allDestinations.add(dest);
-      Trip trip = new Trip(Timestamp.valueOf(LocalDateTime.now()), dest);
+      Trip trip = new Trip(Timestamp.valueOf(LocalDateTime.now().plusHours(3)), dest);
       trip = tripGateway.insert(trip);
       Reservation reservation = new Reservation("Reservation Gateway Test", 7, trip);
       reservation = gateway.insert(reservation);
@@ -72,7 +72,7 @@ class ReservationGatewayTest {
     Destination dest = new Destination("TestResGateway");
     dest = destinationGateway.insert(dest);
     allDestinations.add(dest);
-    Trip trip = new Trip(Timestamp.valueOf(LocalDateTime.now()), dest);
+    Trip trip = new Trip(Timestamp.valueOf(LocalDateTime.now().plusHours(5)), dest);
     trip = tripGateway.insert(trip);
     Reservation reservation = new Reservation("Reservation Gateway Test", 7, trip);
     reservation = gateway.insert(reservation);
@@ -88,7 +88,7 @@ class ReservationGatewayTest {
     Destination dest = new Destination("TestResGateway");
     dest = destinationGateway.insert(dest);
     allDestinations.add(dest);
-    Trip trip = new Trip(Timestamp.valueOf(LocalDateTime.now()), dest);
+    Trip trip = new Trip(Timestamp.valueOf(LocalDateTime.now().plusMinutes(10)), dest);
     trip = tripGateway.insert(trip);
     Reservation reservation = new Reservation("Reservation Gateway Test", 7, trip);
     reservation = gateway.insert(reservation);
@@ -102,7 +102,7 @@ class ReservationGatewayTest {
     Destination dest = new Destination("TestResGateway");
     dest = destinationGateway.insert(dest);
     allDestinations.add(dest);
-    Trip trip = new Trip(Timestamp.valueOf(LocalDateTime.now()), dest);
+    Trip trip = new Trip(Timestamp.valueOf(LocalDateTime.now().plusDays(1)), dest);
     trip = tripGateway.insert(trip);
     Vector<Reservation> reservations = new Vector<>();
     for(int i=0; i<10; i++) {

@@ -50,7 +50,7 @@ class TripGatewayTest {
     Destination dest = new Destination("testTripGateway");
     dest = destinationGateway.insert(dest);
     allDestinations.add(dest);
-    Trip trip = new Trip(Timestamp.valueOf(LocalDateTime.now()), dest);
+    Trip trip = new Trip(Timestamp.valueOf(LocalDateTime.now().plusMinutes(50)), dest);
     trip = gateway.insert(trip);
     try {
       Trip trip2 = gateway.find(trip.getId());
@@ -66,7 +66,7 @@ class TripGatewayTest {
     Destination dest = new Destination("testTripGateway");
     dest = destinationGateway.insert(dest);
     allDestinations.add(dest);
-    Trip trip = new Trip(Timestamp.valueOf(LocalDateTime.now()), dest);
+    Trip trip = new Trip(Timestamp.valueOf(LocalDateTime.now().plusWeeks(1)), dest);
     trip = gateway.insert(trip);
     gateway.delete(trip);
     Trip finalTrip = trip;
@@ -80,7 +80,7 @@ class TripGatewayTest {
     Destination dest = new Destination("testTripGateway");
     dest = destinationGateway.insert(dest);
     allDestinations.add(dest);
-    Trip trip = new Trip(Timestamp.valueOf(LocalDateTime.now()), dest);
+    Trip trip = new Trip(Timestamp.valueOf(LocalDateTime.now().plusMinutes(10)), dest);
     trip = gateway.insert(trip);
     trip.setDeparture(Timestamp.valueOf("2019-01-01 00:05:00"));
     trip = gateway.update(trip);
@@ -97,7 +97,7 @@ class TripGatewayTest {
     Destination dest = new Destination("testTripGateway");
     dest = destinationGateway.insert(dest);
     allDestinations.add(dest);
-    Trip trip = new Trip(Timestamp.valueOf(LocalDateTime.now()), dest);
+    Trip trip = new Trip(Timestamp.valueOf(LocalDateTime.now().plusHours(12)), dest);
     trip = gateway.insert(trip);
     try {
       Trip trip2 = gateway.find(trip.getId());
