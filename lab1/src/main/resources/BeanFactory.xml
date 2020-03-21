@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="reservationValidator" class="Validator.ReservationValidator"/>
+    <bean id="reservationGateway" class="Gateway.ReservationGateway"/>
+    <bean id="reservationService" class="Service.ReservationService">
+        <constructor-arg ref="reservationGateway"/>
+        <constructor-arg ref="reservationValidator"/>
+    </bean>
+    <bean id="tripValidator" class="Validator.TripValidator"/>
+    <bean id="tripGateway" class="Gateway.TripGateway"/>
+    <bean id="tripService" class="Service.TripService">
+        <property name="gateway" ref="tripGateway"/>
+        <property name="validator" ref="tripValidator"/>
+    </bean>
+    <bean id="destinationGateway" class="Gateway.DestinationGateway"/>
+    <bean id="destinationValidator" class="Validator.DestinationValidator"/>
+    <bean id="destinationService" class="Service.DestinationService">
+        <constructor-arg ref="destinationGateway"/>
+        <constructor-arg ref="destinationValidator"/>
+    </bean>
+</beans>

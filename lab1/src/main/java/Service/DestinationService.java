@@ -5,7 +5,7 @@ import Gateway.DestinationGateway;
 import Validator.DestinationValidator;
 
 public class DestinationService extends BaseService<Destination, DestinationGateway> {
-  public DestinationService() {
-    super(new DestinationGateway(), new DestinationValidator());
+  public DestinationService(DestinationGateway gateway, DestinationValidator validator) {
+    super(gateway, validator);
   }
 }

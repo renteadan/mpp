@@ -10,13 +10,18 @@ import java.util.Vector;
 
 public class BaseService<E extends BaseEntity, G extends GatewayInterface<E>> implements ServiceInterface<E> {
 
-  protected G gateway;
+  private G gateway;
   private ValidatorInterface<E> validator;
 
   protected BaseService(G gateway, ValidatorInterface<E> validator) {
     this.gateway = gateway;
     this.validator = validator;
   }
+
+  public BaseService() {
+
+  }
+
   @Override
   public E find(int id) throws SQLErrorNoEntityFound {
     return gateway.find(id);
@@ -50,5 +55,21 @@ public class BaseService<E extends BaseEntity, G extends GatewayInterface<E>> im
 
   public int count() {
     return gateway.findAll().size();
+  }
+
+  public G getGateway() {
+    return gateway;
+  }
+
+  public void setGateway(G gateway) {
+    this.gateway = gateway;
+  }
+
+  public ValidatorInterface<E> getValidator() {
+    return validator;
+  }
+
+  public void setValidator(ValidatorInterface<E> validator) {
+    this.validator = validator;
   }
 }

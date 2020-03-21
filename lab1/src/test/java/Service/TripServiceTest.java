@@ -8,6 +8,8 @@ import net.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -18,8 +20,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TripServiceTest {
 
-  private static TripService service = new TripService();
-  private static DestinationService destinationService = new DestinationService();
+  private static ApplicationContext factory = new ClassPathXmlApplicationContext("BeanFactory.xml");
+  private static TripService service = factory.getBean(TripService.class);
+  private static DestinationService destinationService = factory.getBean(DestinationService.class);
   private static int initialCount;
   private static LoggerManager logger = new LoggerManager(TripServiceTest.class);
   private static Vector<Destination> allRecords = new Vector<>();

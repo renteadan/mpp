@@ -9,10 +9,18 @@ import java.util.Vector;
 
 public class TripService extends BaseService<Trip, TripGateway> {
   public TripService() {
-    super(new TripGateway(), new TripValidator());
+    super();
   }
 
   public Vector<Trip> getTripsByDestination(Destination destination) {
-    return gateway.getTripsByDestination(destination);
+    return super.getGateway().getTripsByDestination(destination);
+  }
+
+  public void setGateway(TripGateway gateway) {
+    super.setGateway(gateway);
+  }
+
+  public void setValidator(TripValidator validator) {
+    super.setValidator(validator);
   }
 }

@@ -52,7 +52,7 @@ public class Trip extends BaseEntity {
     if (this == o) return true;
     if (!(o instanceof Trip)) return false;
     Trip trip = (Trip) o;
-    return getDestination().equals(trip.getDestination()) || getDestination().getId() == trip.getId();
+    return getId() == trip.getId();
   }
 
   @Override

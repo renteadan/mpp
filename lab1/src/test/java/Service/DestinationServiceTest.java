@@ -8,6 +8,8 @@ import net.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.Collections;
 import java.util.Vector;
@@ -16,7 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DestinationServiceTest {
 
-  private static DestinationService service = new DestinationService();
+  private static ApplicationContext factory = new ClassPathXmlApplicationContext("BeanFactory.xml");
+  private static DestinationService service = factory.getBean(DestinationService.class);
   private static int initialCount;
   private static LoggerManager logger = new LoggerManager(DestinationServiceTest.class);
   private static Vector<Destination> allRecords = new Vector<>();

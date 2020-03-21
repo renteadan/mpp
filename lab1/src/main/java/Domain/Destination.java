@@ -47,4 +47,9 @@ public class Destination extends BaseEntity {
   public int hashCode() {
     return Objects.hash(getName(), getId());
   }
+
+  @Override
+  public String toString() {
+    return name;
+  }
 }

@@ -9,8 +9,8 @@ import Validator.ReservationValidator;
 import java.util.Vector;
 
 public class ReservationService extends BaseService<Reservation, ReservationGateway> {
-  protected ReservationService() {
-    super(new ReservationGateway(), new ReservationValidator());
+  public ReservationService(ReservationGateway gateway, ReservationValidator validator) {
+    super(gateway, validator);
   }
 
   public Reservation insert(Reservation reservation) throws ValidationError {
@@ -22,11 +22,11 @@ public class ReservationService extends BaseService<Reservation, ReservationGate
   }
 
   public Vector<Reservation> getReservationsByTrip(Trip trip) {
-    return gateway.getReservationsByTrip(trip);
+    return super.getGateway().getReservationsByTrip(trip);
   }
 
   private int countSeatsOnTrip(Trip trip) {
-    Vector<Reservation> reservations = gateway.getReservationsByTrip(trip);
+    Vector<Reservation> reservations = super.getGateway().getReservationsByTrip(trip);
     int seats = 0;
     for(Reservation reservation: reservations) {
       seats+=reservation.getSeatsNr();
