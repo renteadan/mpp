@@ -14,7 +14,7 @@ public class ReservationService extends BaseService<Reservation, ReservationGate
   }
 
   public Reservation insert(Reservation reservation) throws ValidationError {
-    int seats = countSeatsOnTrip(reservation.getTrip());
+    int seats = countReservedSeatsOnTrip(reservation.getTrip());
     if(18 - seats < reservation.getSeatsNr()) {
       throw new ValidationError("Not enough seats!");
     }
@@ -25,12 +25,16 @@ public class ReservationService extends BaseService<Reservation, ReservationGate
     return super.getGateway().getReservationsByTrip(trip);
   }
 
-  private int countSeatsOnTrip(Trip trip) {
+  public int countReservedSeatsOnTrip(Trip trip) {
     Vector<Reservation> reservations = super.getGateway().getReservationsByTrip(trip);
     int seats = 0;
     for(Reservation reservation: reservations) {
       seats+=reservation.getSeatsNr();
     }
     return seats;
+  }
+
+  public int countRemainingSeatsOnTrip(Trip trip) {
+    return 18 - countReservedSeatsOnTrip(trip);
   }
 }
