@@ -27,6 +27,10 @@ public class AdminController {
     }
   }
 
+  public void logout() {
+
+  }
+
   private void loadSearchTab() throws IOException {
     URL searchUrl = getClass().getResource("/FXML/Search.fxml");
     FXMLLoader searchLoader = new FXMLLoader(searchUrl);

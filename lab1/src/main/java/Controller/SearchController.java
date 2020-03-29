@@ -20,13 +20,16 @@ public class SearchController {
   public ChoiceBox<Destination> destinationSelect;
   public DatePicker datePicker;
   private static ApplicationContext factory = new ClassPathXmlApplicationContext("BeanFactory.xml");
+  public Button logoutButton;
 
   @FXML
   private TableView<Trip> tripsTable;
   private DestinationService destinationService = factory.getBean(DestinationService.class);
   private TripService tripService = factory.getBean(TripService.class);
   private Trip selectedTrip;
+  private Destination selectedDestination;
   private AdminController parent;
+  private LocalDate selectedDate;
   public SearchController() {
   }
 
@@ -49,7 +52,7 @@ public class SearchController {
                   @Override
                   public void updateItem(LocalDate item, boolean empty) {
                     super.updateItem(item, empty);
-                    if (item.isBefore(datePicker.getValue())) {
+                    if (item.isBefore(datePicker.getValue().minusDays(14))) {
                       setDisable(true);
                       setStyle("-fx-background-color: #ff0709;");
                     }
@@ -59,6 +62,7 @@ public class SearchController {
             };
     datePicker.setDayCellFactory(dayCellFactory);
     initTable();
+    selectedDate = LocalDate.now();
   }
 
   @SuppressWarnings("unchecked")
@@ -84,7 +88,19 @@ public class SearchController {
   public void selectDestination(ActionEvent actionEvent) {
     selectedTrip = null;
     parent.disableData();
-    Destination destination = destinationSelect.getValue();
-    loadTableData(tripService.getTripsByDestination(destination));
+    selectedDestination = destinationSelect.getValue();
+    if(selectedDate != null)
+      loadTableData(tripService.getTripsByDestinationAndDate(selectedDestination, selectedDate));
+  }
+
+  public void selectDate(ActionEvent actionEvent) {
+    parent.disableData();
+    selectedDate = datePicker.getValue();
+    selectedDate = selectedDate.atStartOfDay().toLocalDate();
+    if(selectedDestination != null)
+      loadTableData(tripService.getTripsByDestinationAndDate(selectedDestination, selectedDate));
+  }
+
+  public void logout(ActionEvent actionEvent) {
   }
 }

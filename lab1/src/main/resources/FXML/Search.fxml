@@ -33,7 +33,7 @@
                              <Font name="System Bold" size="20.0" />
                          </font>
                      </Label>
-                     <DatePicker fx:id="datePicker">
+                     <DatePicker fx:id="datePicker" onAction="#selectDate">
                          <HBox.margin>
                              <Insets left="10.0" />
                          </HBox.margin>
@@ -47,5 +47,6 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
+      <Button fx:id="logoutButton" layoutX="534.0" layoutY="14.0" mnemonicParsing="false" onAction="#logout" text="Logout" />
    </children>
 </AnchorPane>

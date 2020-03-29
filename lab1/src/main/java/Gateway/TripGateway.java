@@ -6,6 +6,8 @@ import Errors.SQLErrorNoEntityFound;
 import Logger.LoggerManager;
 import org.jooq.*;
 import org.jooq.impl.DSL;
+
+import java.time.LocalDate;
 import java.util.Vector;
 
 public class TripGateway extends BaseGateway implements GatewayInterface<Trip> {
@@ -53,6 +55,14 @@ public class TripGateway extends BaseGateway implements GatewayInterface<Trip> {
   public Vector<Trip> getTripsByDestination(Destination destination) {
     SelectQuery<?> selectQuery = ctx.selectQuery(TABLE);
     selectQuery.addConditions(DSL.condition("? = ?", Trip.DESTINATION_ID, destination.getId()));
+    Result<?> result = super.findJooq(selectQuery);
+    return createTrips(result);
+  }
+
+  public Vector<Trip> getTripsByDestinationAndDate(Destination destination, LocalDate date) {
+    SelectQuery<?> selectQuery = ctx.selectQuery(TABLE);
+    selectQuery.addConditions(DSL.condition("? = ?", Trip.DESTINATION_ID, destination.getId()));
+    selectQuery.addConditions(DSL.condition(" DATE_PART('day', ? - ?::timestamp) = 0", Trip.DEPARTURE, date));
     Result<?> result = super.findJooq(selectQuery);
     return createTrips(result);
   }
