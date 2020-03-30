@@ -5,6 +5,8 @@ public class Trip: BaseEntity
 	public DateTime Departure { get; set; }
 	public Destination Destination { get; set; }
 
+	public int LeftSeats { get; set; }
+
 	public Trip(int id, DateTime departure, Destination destination) : base(id)
 	{
 		Departure = departure;

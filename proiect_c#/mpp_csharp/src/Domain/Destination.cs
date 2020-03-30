@@ -24,4 +24,9 @@ public class Destination: BaseEntity
 	{
 		return 539060726 + Id.GetHashCode();
 	}
+
+	public override string ToString()
+	{
+		return Name;
+	}
 }

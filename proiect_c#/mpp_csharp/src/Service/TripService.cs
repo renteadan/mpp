@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-class TripService : BaseService<Trip, TripRepository>
+class TripService: BaseService<Trip, TripRepository>
 {
-	protected TripService() : base(new TripRepository(), new TripValidator())
+	private readonly ReservationService reservationService = new ReservationService();
+	public TripService() : base(new TripRepository(), new TripValidator())
 	{
 	}
 
+
 	public List<Trip> GetTripsByDestination(Destination destination)
 	{
-		return repository.GetTripsByDestination(destination);
+		List<Trip> trips = repository.GetTripsByDestination(destination);
+		trips.ForEach(trip => trip.LeftSeats = reservationService.CountRemainingSeatsOnTrip(trip));
+		return trips;
 	}
 
 	public List<Trip> GetTripsByDestinationAndDate(Destination destination, DateTime date)
 	{
-		return repository.GetTripsByDestinationAndDate(destination, date);
+		List<Trip> trips = repository.GetTripsByDestinationAndDate(destination, date.Date);
+		trips.ForEach(trip => trip.LeftSeats = reservationService.CountRemainingSeatsOnTrip(trip));
+		return trips;
 	}
 }
 
