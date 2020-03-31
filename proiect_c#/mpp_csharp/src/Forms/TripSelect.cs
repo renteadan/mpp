@@ -6,8 +6,8 @@ namespace mpp_csharp.src.Forms
 {
 	public partial class TripSelect : Form
 	{
-		private readonly DestinationService destinationService = new DestinationService();
-		private readonly TripService tripService = new TripService();
+		private readonly DestinationService destinationService = new DestinationService(new DestinationRepository(), new DestinationValidator());
+		private readonly TripService tripService = new TripService(new TripRepository(), new TripValidator());
 		public TripSelect()
 		{
 			InitializeComponent();
@@ -46,6 +46,7 @@ namespace mpp_csharp.src.Forms
 		{
 			Trip trip = (Trip)tripView.Rows[e.RowIndex].DataBoundItem;
 			new ReservationForm(trip).ShowDialog();
+			LoadTable();
 		}
 	}
 }

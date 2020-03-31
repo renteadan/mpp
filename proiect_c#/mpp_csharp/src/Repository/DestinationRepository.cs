@@ -2,24 +2,24 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-public class DestinationRepository : BaseRepository, IRepository<Destination>
+public class DestinationRepository : BaseRepository, IRepository<Destination>, IDestinationRepository
 {
 	public DestinationRepository()
 	{
 	}
 
-	public  List<Destination> FindAll()
+	public List<Destination> FindAll()
 	{
 		NpgsqlCommand command = new NpgsqlCommand("SELECT * FROM destination;");
 		using (NpgsqlDataReader reader = ExecuteSelect(command))
-		{	
+		{
 			List<Destination> destinations = new List<Destination>();
 			while (reader.Read())
 			{
 				Destination destination = new Destination(reader.GetInt32(0), reader.GetString(1));
 				destinations.Add(destination);
 			}
-			return destinations; 
+			return destinations;
 		}
 	}
 
@@ -27,7 +27,7 @@ public class DestinationRepository : BaseRepository, IRepository<Destination>
 	{
 		NpgsqlCommand command = new NpgsqlCommand("INSERT INTO destination(name) VALUES(@name) RETURNING id;");
 		command.Parameters.AddWithValue("@name", destination.Name);
-		int result =  ExecuteScalar(command);
+		int result = ExecuteScalar(command);
 		destination.Id = result;
 		return destination;
 	}
@@ -56,11 +56,11 @@ public class DestinationRepository : BaseRepository, IRepository<Destination>
 			if (!reader.Read())
 				throw new SQLErrorNoEntityFound($"No destination found with this id = {id}");
 			var d = new Destination(reader.GetInt32(0), reader.GetString(1));
-			return d; 
+			return d;
 		}
 	}
 
-	public  List<Destination> FindLastN(int n)
+	public List<Destination> FindLastN(int n)
 	{
 		NpgsqlCommand command = new NpgsqlCommand("SELECT * FROM destination ORDER BY id DESC LIMIT @n;");
 		command.Parameters.AddWithValue("@n", n);
@@ -72,7 +72,7 @@ public class DestinationRepository : BaseRepository, IRepository<Destination>
 				Destination destination = new Destination(reader.GetInt32(0), reader.GetString(1));
 				destinations.Add(destination);
 			}
-			return destinations; 
+			return destinations;
 		}
 	}
 }

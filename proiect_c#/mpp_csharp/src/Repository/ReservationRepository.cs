@@ -1,7 +1,7 @@
 using Npgsql;
 using System.Collections.Generic;
 
-public class ReservationRepository : BaseRepository, IRepository<Reservation>
+public class ReservationRepository : BaseRepository, IRepository<Reservation>, IReservationRepository
 {
 	public void Delete(Reservation reservation)
 	{
@@ -10,7 +10,7 @@ public class ReservationRepository : BaseRepository, IRepository<Reservation>
 		ExecuteNonQuery(command);
 	}
 
-	public  Reservation Find(int id)
+	public Reservation Find(int id)
 	{
 		NpgsqlCommand command = new NpgsqlCommand(
 			"SELECT * FROM reservation " +
@@ -19,7 +19,7 @@ public class ReservationRepository : BaseRepository, IRepository<Reservation>
 			"WHERE reservation.id = @id;");
 		command.Parameters.AddWithValue("@id", id);
 		using (NpgsqlDataReader reader = ExecuteSelect(command))
-		{	
+		{
 			if (!reader.Read())
 				throw new SQLErrorNoEntityFound($"No reservation found with this id = {id}");
 			Destination destination = new Destination(reader.GetInt32(7), reader.GetString(8));
@@ -28,7 +28,7 @@ public class ReservationRepository : BaseRepository, IRepository<Reservation>
 		}
 	}
 
-	public  List<Reservation> FindAll()
+	public List<Reservation> FindAll()
 	{
 		NpgsqlCommand command = new NpgsqlCommand(
 			"SELECT * FROM reservation " +
@@ -49,7 +49,7 @@ public class ReservationRepository : BaseRepository, IRepository<Reservation>
 		}
 	}
 
-	public  List<Reservation> FindLastN(int n)
+	public List<Reservation> FindLastN(int n)
 	{
 		NpgsqlCommand command = new NpgsqlCommand(
 			"SELECT * FROM reservation " +
@@ -73,13 +73,13 @@ public class ReservationRepository : BaseRepository, IRepository<Reservation>
 		}
 	}
 
-	public  Reservation Insert(Reservation reservation)
+	public Reservation Insert(Reservation reservation)
 	{
 		NpgsqlCommand command = new NpgsqlCommand("INSERT INTO reservation(client_name, seats_nr, trip_id) VALUES(@client_name, @seats_nr, @trip_id) RETURNING id;");
 		command.Parameters.AddWithValue("@client_name", reservation.ClientName);
 		command.Parameters.AddWithValue("@seats_nr", reservation.SeatsNr);
 		command.Parameters.AddWithValue("@trip_id", reservation.Trip.Id);
-		int result =  ExecuteScalar(command);
+		int result = ExecuteScalar(command);
 		reservation.Id = result;
 		return reservation;
 	}
@@ -93,7 +93,7 @@ public class ReservationRepository : BaseRepository, IRepository<Reservation>
 		ExecuteNonQuery(command);
 	}
 
-	public  List<Reservation> GetReservationsByTrip(Trip trip)
+	public List<Reservation> GetReservationsByTrip(Trip trip)
 	{
 		NpgsqlCommand command = new NpgsqlCommand(
 			"SELECT * FROM reservation " +

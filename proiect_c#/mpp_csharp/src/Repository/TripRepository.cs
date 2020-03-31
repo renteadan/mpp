@@ -2,12 +2,15 @@
 using Npgsql;
 using System;
 using System.Collections.Generic;
-class TripRepository: BaseRepository, IRepository<Trip> {
+class TripRepository : BaseRepository, IRepository<Trip>, ITripRepository
+{
 
-  public TripRepository() {
+  public TripRepository()
+  {
   }
 
-  public  Trip Find(int id)  {
+  public Trip Find(int id)
+  {
     NpgsqlCommand command = new NpgsqlCommand(
       "SELECT * FROM trip " +
       "LEFT JOIN destination ON trip.destination_id = destination.id " +
@@ -19,17 +22,19 @@ class TripRepository: BaseRepository, IRepository<Trip> {
         throw new SQLErrorNoEntityFound($"No trip found with this id = {id}");
       Destination destination = new Destination(reader.GetInt32(3), reader.GetString(4));
       var t = new Trip(reader.GetInt32(0), reader.GetDateTime(1), destination);
-      return t; 
+      return t;
     }
   }
 
-  public void Delete(Trip trip) {
+  public void Delete(Trip trip)
+  {
     NpgsqlCommand command = new NpgsqlCommand("DELETE FROM trip WHERE id = @id;");
     command.Parameters.AddWithValue("@id", trip.Id);
     ExecuteNonQuery(command);
   }
 
-  public  List<Trip> GetTripsByDestination(Destination destination) {
+  public List<Trip> GetTripsByDestination(Destination destination)
+  {
     NpgsqlCommand command = new NpgsqlCommand(
       "SELECT * FROM trip " +
       "LEFT JOIN destination ON trip.destination_id = destination.id " +
@@ -44,11 +49,11 @@ class TripRepository: BaseRepository, IRepository<Trip> {
         Trip trip = new Trip(reader.GetInt32(0), reader.GetDateTime(1), new_dest);
         trips.Add(trip);
       }
-      return trips; 
+      return trips;
     }
   }
 
-  public  List<Trip> GetTripsByDestinationAndDate(Destination destination, DateTime date)
+  public List<Trip> GetTripsByDestinationAndDate(Destination destination, DateTime date)
   {
     NpgsqlCommand command = new NpgsqlCommand(
       "SELECT * FROM trip " +
@@ -56,7 +61,7 @@ class TripRepository: BaseRepository, IRepository<Trip> {
       "WHERE trip.destination_id = @id AND " +
       "DATE_PART('day', trip.departure - @date::timestamp) = 0;");
     command.Parameters.AddWithValue("@id", destination.Id);
-    command.Parameters.AddWithValue("@date", date);  
+    command.Parameters.AddWithValue("@date", date);
     using (NpgsqlDataReader reader = ExecuteSelect(command))
     {
       List<Trip> trips = new List<Trip>();
@@ -66,7 +71,7 @@ class TripRepository: BaseRepository, IRepository<Trip> {
         Trip trip = new Trip(reader.GetInt32(0), reader.GetDateTime(1), new_dest);
         trips.Add(trip);
       }
-      return trips; 
+      return trips;
     }
   }
 
@@ -79,17 +84,17 @@ class TripRepository: BaseRepository, IRepository<Trip> {
     ExecuteNonQuery(command);
   }
 
-  public  Trip Insert(Trip trip)
+  public Trip Insert(Trip trip)
   {
     NpgsqlCommand command = new NpgsqlCommand("INSERT INTO trip(departure, destination_id) VALUES(@departure, @dest_id) RETURNING id;");
     command.Parameters.AddWithValue("@departure", trip.Departure);
     command.Parameters.AddWithValue("@dest_id", trip.Destination.Id);
-    int result =  ExecuteScalar(command);
+    int result = ExecuteScalar(command);
     trip.Id = result;
     return trip;
   }
 
-  public  List<Trip> FindAll()
+  public List<Trip> FindAll()
   {
     NpgsqlCommand command = new NpgsqlCommand(
       "SELECT * FROM trip " +
@@ -108,7 +113,7 @@ class TripRepository: BaseRepository, IRepository<Trip> {
     }
   }
 
-  public  List<Trip> FindLastN(int n)
+  public List<Trip> FindLastN(int n)
   {
     NpgsqlCommand command = new NpgsqlCommand(
       "SELECT * FROM trip " +

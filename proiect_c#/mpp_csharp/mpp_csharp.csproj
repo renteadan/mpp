@@ -109,6 +109,9 @@
       <DependentUpon>TripSelect.cs</DependentUpon>
     </Compile>
     <Compile Include="src\Repository\DestinationRepository.cs" />
+    <Compile Include="src\Repository\IDestinationRepository.cs" />
+    <Compile Include="src\Repository\IReservationRepository.cs" />
+    <Compile Include="src\Repository\ITripRepository.cs" />
     <Compile Include="src\Repository\LoginRepository.cs" />
     <Compile Include="src\Service\LoginService.cs" />
     <Compile Include="tests\Repository\DestinationRepositoryTest.cs" />

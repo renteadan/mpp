@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace mpp_csharp.src.Forms
@@ -13,7 +6,7 @@ namespace mpp_csharp.src.Forms
 	public partial class ReservationForm : Form
 	{
 
-		private readonly ReservationService service = new ReservationService();
+		private readonly ReservationService service = new ReservationService(new ReservationRepository(), new ReservationValidator());
 		private readonly Trip trip;
 		public ReservationForm()
 		{
@@ -28,13 +21,13 @@ namespace mpp_csharp.src.Forms
 
 		private void LoadData()
 		{
-			dataView.DataSource = service.getReservationsByTrip(trip);
+			dataView.DataSource = service.GetReservationsByTrip(trip);
 			dataView.Columns.Remove(dataView.Columns["Id"]);
 			dataView.Columns.Remove(dataView.Columns["Trip"]);
 			seatsBar.Maximum = service.CountRemainingSeatsOnTrip(trip);
-			seatsBar.Minimum = 1;
-			seatsBar.Value = 1;
-			seatsLabel.Text = "1";
+			seatsBar.Minimum = 0;
+			seatsBar.Value = 0;
+			seatsLabel.Text = "0";
 		}
 
 		private void ReservationForm_Load(object sender, EventArgs e)

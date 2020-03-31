@@ -1,5 +1,5 @@
 
-public class DestinationService: BaseService<Destination, DestinationRepository> {
-  public DestinationService(): base(new DestinationRepository(), new DestinationValidator()) {
+public class DestinationService: BaseService<Destination, IDestinationRepository> {
+  public DestinationService(DestinationRepository repository, DestinationValidator validator): base(repository, validator) {
   }
 }

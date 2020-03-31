@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-class TripService: BaseService<Trip, TripRepository>
+class TripService: BaseService<Trip, ITripRepository>
 {
-	private readonly ReservationService reservationService = new ReservationService();
-	public TripService() : base(new TripRepository(), new TripValidator())
+	private readonly ReservationService reservationService = new ReservationService(new ReservationRepository(), new ReservationValidator());
+	public TripService(TripRepository repository, TripValidator validator) : base(repository, validator)
 	{
 	}
 

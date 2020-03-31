@@ -1,28 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-class ReservationService: BaseService<Reservation, ReservationRepository>
+
+class ReservationService: BaseService<Reservation, IReservationRepository>
 {
-	public ReservationService(): base(new ReservationRepository(), new ReservationValidator()) { }
+	public ReservationService(ReservationRepository repository, ReservationValidator validator) : base(repository, validator) { }
 
   public  new Reservation Insert(Reservation reservation)
   {
-    int seats =  countReservedSeatsOnTrip(reservation.Trip);
+    int seats =  CountReservedSeatsOnTrip(reservation.Trip);
     if(18 - seats<reservation.SeatsNr) {
       throw new ValidationError("Not enough seats!");
     }
     return  base.Insert(reservation);
   }
 
-  public List<Reservation> getReservationsByTrip(Trip trip)
+  public List<Reservation> GetReservationsByTrip(Trip trip)
 {
   return repository.GetReservationsByTrip(trip);
 }
 
-public  int countReservedSeatsOnTrip(Trip trip)
+public  int CountReservedSeatsOnTrip(Trip trip)
 {
   List<Reservation> reservations =  repository.GetReservationsByTrip(trip);
   int seats = 0;
@@ -35,7 +32,7 @@ public  int countReservedSeatsOnTrip(Trip trip)
 
 public  int CountRemainingSeatsOnTrip(Trip trip)
 {
-  return 18 -  countReservedSeatsOnTrip(trip);
+  return 18 -  CountReservedSeatsOnTrip(trip);
 }
 }
 
