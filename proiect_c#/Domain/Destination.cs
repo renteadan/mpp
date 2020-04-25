@@ -37,5 +37,5 @@ namespace csharp.Domain
 		{
 			return Name;
 		}
-	} 
+	}
 }

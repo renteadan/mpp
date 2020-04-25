@@ -10,7 +10,7 @@ namespace csharp.Networking
 	}
 
 	[Serializable]
-	public class ReservationAdd: IAdd
+	public class ReservationAdd : IAdd
 	{
 		public Reservation reservation;
 

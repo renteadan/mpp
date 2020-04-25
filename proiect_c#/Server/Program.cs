@@ -1,17 +1,16 @@
-﻿using csharp.Server.Server;
-using System;
+﻿using System;
 
 namespace csharp.Server
 {
-	internal static class Program
+	class Program
 	{
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
 		[STAThread]
-		private static void Main()
+		static void Main()
 		{
-			new ServerImpl().Start();
+			new Server().Start();
 		}
 	}
 }

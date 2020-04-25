@@ -37,5 +37,5 @@ namespace csharp.Domain
 		{
 			return -98705819 + Id.GetHashCode();
 		}
-	} 
+	}
 }

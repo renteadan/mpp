@@ -1,16 +1,17 @@
 ﻿using chsarp.Client;
 using csharp.Domain;
 using csharp.Networking;
+using csharp.Networking.Observer;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace csharp.Client
 {
-	public partial class TripSelect : Form, IForm
+	public partial class TripSelect : Form, IObserver
 	{
 		private readonly ClientListener listener;
+		private Destination destination;
+		private DateTime date;
 		public TripSelect()
 		{
 			InitializeComponent();
@@ -20,30 +21,29 @@ namespace csharp.Client
 		{
 			InitializeComponent();
 			listener = Listener;
-			listener.AddForm(this);
+			listener.AddObservable(this);
 			listener.ReloadData += ReloadData;
 		}
 
 		public void ReloadData(object sender, ReloadDataEventArgs e)
 		{
-			BeginInvoke(new Action(() => {
-				LoadTable();
-			}));
+			BeginInvoke(new Action(() => LoadTable()));
 		}
 
 		private void TripSelect_Load(object sender, EventArgs e)
 		{
-			QueryDestinations query = new QueryDestinations();
-			listener.SendQuery(query);
 			timePick.Value = DateTime.Now;
+			destinationBox.DataSource = listener.GetDestinations();
 		}
 
 		private void LoadTable()
 		{
-			Destination destination = (Destination)destinationBox.SelectedItem;
-			DateTime date = timePick.Value;
-			QueryTrips query = new QueryTrips(destination, date);
-			listener.SendQuery(query);
+			destination = (Destination)destinationBox.SelectedItem;
+			date = timePick.Value;
+			if (destination == null || date == null)
+				return;
+			tripView.DataSource = listener.GetTrips(destination, date);
+			tripView.Columns.Remove(tripView.Columns["Id"]);
 		}
 
 		private void DestinationBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -67,20 +67,9 @@ namespace csharp.Client
 			LoadTable();
 		}
 
-		public void HandleResponse(IResponse response)
+		public void UpdateObs()
 		{
-			if(response is ResponseTrips responseTrips)
-			{
-				List<Trip> trips = responseTrips.trips;
-				tripView.DataSource = trips;
-				tripView.Columns.Remove(tripView.Columns["Id"]);
-			} else if(response is ResponseDestinations responseDestinations)
-			{
-				destinationBox.DataSource = responseDestinations.destinations;
-			} else if(response is ResponseReloadData)
-			{
-				LoadTable();
-			}
+			LoadTable();
 		}
 	}
 }

@@ -5,10 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="./BaseEntity.cs" Link="BaseEntity.cs" />
-    <Compile Include="./Destination.cs" Link="Destination.cs" />
-    <Compile Include="./Reservation.cs" Link="Reservation.cs" />
-    <Compile Include="./Trip.cs" Link="Trip.cs" />
+    <Compile Include="./BaseEntity.cs" Link="BaseEntity.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="./Destination.cs" Link="Destination.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="./Reservation.cs" Link="Reservation.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="./Trip.cs" Link="Trip.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
   </ItemGroup>
 
 </Project>

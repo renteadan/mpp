@@ -8,7 +8,7 @@ namespace csharp.Networking
 	}
 
 	[Serializable]
-	public class QueryReservations: IQuery
+	public class QueryReservations : IQuery
 	{
 		public QueryReservations(Trip trip)
 		{
@@ -19,13 +19,13 @@ namespace csharp.Networking
 	}
 
 	[Serializable]
-	public class QueryDestinations: IQuery
+	public class QueryDestinations : IQuery
 	{
 
 	}
 
 	[Serializable]
-	public class QueryTrips: IQuery
+	public class QueryTrips : IQuery
 	{
 		public Destination destination;
 		public DateTime departure;
@@ -38,7 +38,7 @@ namespace csharp.Networking
 	}
 
 	[Serializable]
-	public class QueryLogin: IQuery
+	public class QueryLogin : IQuery
 	{
 		public string Username, Password;
 

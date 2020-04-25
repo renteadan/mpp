@@ -10,7 +10,7 @@ namespace csharp.Networking
 	}
 
 	[Serializable]
-	public class ResponseDestinations: IResponse
+	public class ResponseDestinations : IResponse
 	{
 		public List<Destination> destinations;
 
@@ -21,7 +21,7 @@ namespace csharp.Networking
 	}
 
 	[Serializable]
-	public class ResponseTrips: IResponse
+	public class ResponseTrips : IResponse
 	{
 		public List<Trip> trips;
 
@@ -32,7 +32,7 @@ namespace csharp.Networking
 	}
 
 	[Serializable]
-	public class ResponseReservations: IResponse
+	public class ResponseReservations : IResponse
 	{
 		public List<Reservation> reservations;
 		public int RemainingSeats;
@@ -45,13 +45,13 @@ namespace csharp.Networking
 	}
 
 	[Serializable]
-	public class ResponseReloadData: IResponse
+	public class ResponseReloadData : IResponse
 	{
 
 	}
 
 	[Serializable]
-	public class ResponseLogin: IResponse
+	public class ResponseLogin : IResponse
 	{
 		public bool Success;
 

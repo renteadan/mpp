@@ -115,6 +115,7 @@
 			this.Controls.Add(this.dataView);
 			this.Name = "ReservationForm";
 			this.Text = "ReservationForm";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ReservationForm_FormClosing);
 			this.Load += new System.EventHandler(this.ReservationForm_Load);
 			((System.ComponentModel.ISupportInitialize)(this.dataView)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.seatsBar)).EndInit();

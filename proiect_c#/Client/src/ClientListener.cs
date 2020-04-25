@@ -1,107 +1,98 @@
-﻿
+﻿using csharp.Domain;
 using csharp.Networking;
+using csharp.Networking.Observer;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Net.Sockets;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Threading;
+using System.Runtime.Remoting.Channels;
+using System.Runtime.Remoting.Channels.Tcp;
 
 namespace chsarp.Client
 {
-	public class ClientListener
+	[Serializable]
+	public class ClientListener : MarshalByRefObject, IObserver
 	{
-		private readonly TcpClient client;
-		private readonly BinaryFormatter formatter = new BinaryFormatter();
-		private readonly HashSet<IForm> forms = new HashSet<IForm>();
-		private readonly Queue<IResponse> responses = new Queue<IResponse>();
-		private readonly EventWaitHandle waitHandle = new AutoResetEvent(false);
-		private bool running = true;
+		private readonly IRemotableObject appState;
+		private readonly HashSet<IObserver> forms = new HashSet<IObserver>();
+		private readonly TcpChannel channel;
 
 		public ClientListener()
 		{
 			try
 			{
-				client = new TcpClient("localhost", 45000);
-			} catch(Exception e)
+				BinaryServerFormatterSinkProvider serverProv = new BinaryServerFormatterSinkProvider();
+				serverProv.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
+				BinaryClientFormatterSinkProvider clientProv = new BinaryClientFormatterSinkProvider();
+				IDictionary props = new Hashtable();
+
+				props["port"] = 0;
+				TcpChannel channel = new TcpChannel(props, clientProv, serverProv);
+				ChannelServices.RegisterChannel(channel, false);
+				appState = (IRemotableObject)Activator.GetObject(typeof(RemotableObject), "tcp://localhost:45000/appstate");
+				appState.AddObservable(this);
+			}
+			catch (Exception e)
 			{
 				Console.WriteLine(e.StackTrace);
 			}
 		}
 
-		public void AddForm(IForm form)
+		public bool Login(string user, string pass)
 		{
-			forms.Add(form);
-		}
-		public void Start()
-		{
-			Thread t = new Thread(Run);
-			t.Start();
-		}
-
-		private void Run()
-		{
-			while (running)
+			if (appState.Login(user, pass))
 			{
-				try
-				{
-					IResponse response = (IResponse)formatter.Deserialize(client.GetStream());
-					Console.WriteLine($"New response {response}");
-					if (response is ResponseReloadData)
-					{
-						EventHandler<ReloadDataEventArgs> handler = ReloadData;
-						handler?.Invoke(this, new ReloadDataEventArgs());
-					} else
-					{
-						responses.Enqueue(response);
-						waitHandle.Set();
-					}
-				} catch(Exception e)
-				{
-					Console.WriteLine(e.StackTrace);
-					Dispose();
-				}
+				appState.AddObservable(this);
+				return true;
 			}
+			return false;
 		}
 
-		public void SendQuery(IQuery query)
+		public List<Reservation> GetReservations(Trip trip)
 		{
-			formatter.Serialize(client.GetStream(), query);
-			client.GetStream().Flush();
-			NotifiyForms();
+			return appState.GetReservations(trip);
 		}
 
-		public void SendAdd(IAdd add)
+		public int GetRemainingSeats(Trip trip)
 		{
-			formatter.Serialize(client.GetStream(), add);
-			client.GetStream().Flush();
+			return appState.GetRemainingSeats(trip);
 		}
 
-		private void NotifiyForms()
+		public void AddReservation(Reservation res)
 		{
-			try
-			{
-				waitHandle.WaitOne();
-				lock (responses)
-				{
-					IResponse response = responses.Dequeue();
-					foreach (IForm form in forms)
-					{
-						form.HandleResponse(response);
-					}
-				}
-			} catch(Exception e)
-			{
-				Console.WriteLine(e.StackTrace);
-				Dispose();
-			}
+			appState.AddReservation(res);
 		}
 
-		public void Dispose()
+		public List<Destination> GetDestinations()
 		{
-			running = false;
-			client?.Close();
+			return appState.GetDestinations();
+		}
+
+		public List<Trip> GetTrips(Destination dest, DateTime time)
+		{
+			return appState.GetTrips(dest, time);
+		}
+
+		public void AddObservable(IObserver observable)
+		{
+			forms.Add(observable);
+		}
+
+		public void RemoveObservable(IObserver observable)
+		{
+			forms.Remove(observable);
 		}
 
 		public event EventHandler<ReloadDataEventArgs> ReloadData;
+
+		public void ReloadForms()
+		{
+			EventHandler<ReloadDataEventArgs> handler = ReloadData;
+			handler?.Invoke(this, new ReloadDataEventArgs());
+		}
+
+		public void UpdateObs()
+		{
+			ReloadForms();
+		}
 	}
 }

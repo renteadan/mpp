@@ -81,6 +81,7 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Text.Encoding.CodePages, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Text.Encoding.CodePages.4.5.1\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
     </Reference>
@@ -108,7 +109,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\ClientListener.cs" />
-    <Compile Include="src\ReloadDataEventArgs.cs" />
     <Compile Include="src\Forms\IForm.cs" />
     <Compile Include="src\Forms\LoginForm.cs">
       <SubType>Form</SubType>

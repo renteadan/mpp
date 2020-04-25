@@ -1,18 +1,17 @@
 ﻿using chsarp.Client;
 using csharp.Domain;
 using csharp.Networking;
+using csharp.Networking.Observer;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace csharp.Client
 {
-	public partial class ReservationForm : Form, IForm
+	public partial class ReservationForm : Form, IObserver
 	{
 
 		private readonly ClientListener listener;
-		private readonly Trip trip;
+		private Trip trip;
 		public ReservationForm()
 		{
 			InitializeComponent();
@@ -29,21 +28,24 @@ namespace csharp.Client
 			InitializeComponent();
 			listener = Listener;
 			this.trip = trip;
-			listener.AddForm(this);
+			//listener.AddObservable(this);
 			listener.ReloadData += ReloadData;
 		}
 
 		public void ReloadData(object sender, ReloadDataEventArgs e)
 		{
-			BeginInvoke(new Action(() => {
-				LoadData();
-			}));
+			BeginInvoke(new Action(() => LoadData()));
 		}
-
 		private void LoadData()
 		{
-			QueryReservations query = new QueryReservations(trip);
-			listener.SendQuery(query);
+			dataView.DataSource = listener.GetReservations(trip);
+			dataView.Columns.Remove(dataView.Columns["Id"]);
+			dataView.Columns.Remove(dataView.Columns["Trip"]);
+			seatsBar.Maximum = listener.GetRemainingSeats(trip);
+			seatsBar.Minimum = 0;
+			seatsBar.Value = 0;
+			seatsLabel.Text = "0";
+
 		}
 
 		private void ReservationForm_Load(object sender, EventArgs e)
@@ -61,8 +63,7 @@ namespace csharp.Client
 			int seats = seatsBar.Value;
 			string name = nameBox.Text;
 			Reservation reservation = new Reservation(name, seats, trip);
-			ReservationAdd add = new ReservationAdd(reservation);
-			listener.SendAdd(add);
+			listener.AddReservation(reservation);
 		}
 
 		private void ReserveButton_Click(object sender, EventArgs e)
@@ -70,22 +71,14 @@ namespace csharp.Client
 			MakeReservation();
 		}
 
-		public void HandleResponse(IResponse response)
+		public void UpdateObs()
 		{
-			if(response is ResponseReservations responseReservations)
-			{
-				List<Reservation> trips = responseReservations.reservations;
-				dataView.DataSource = trips;
-				dataView.Columns.Remove(dataView.Columns["Id"]);
-				dataView.Columns.Remove(dataView.Columns["Trip"]);
-				seatsBar.Maximum = responseReservations.RemainingSeats;
-				seatsBar.Minimum = 0;
-				seatsBar.Value = 0;
-				seatsLabel.Text = "0";
-			} else if(response is ResponseReloadData)
-			{
-				LoadData();
-			}
+			LoadData();
+		}
+
+		private void ReservationForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			listener.ReloadData -= ReloadData;
 		}
 	}
 }
