@@ -1,0 +1,8 @@
+
+
+sql_url = <>
+username = <>
+password = <>
+data_schema = mpp
+logs_schema = logs
+postgresql_driver = org.postgresql.Driver

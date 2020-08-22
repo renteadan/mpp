@@ -1,0 +1,79 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+option csharp_namespace = "grpcService.Proto";
+
+package test;
+
+service ServiceImpl {
+	rpc GetDestinations (DestinationsRequest) returns (DestionationsResponse);
+	rpc GetTrips (TripsRequest) returns (TripsResponse);
+	rpc GetReservations (ReservationsRequest) returns (ReservationsResponse);
+	rpc MakeReservation (ReservationDTO) returns (Empty);
+	rpc Login (LoginRequest) returns (LoginResponse);
+	rpc GetRemainingSeats (TripDTO) returns (SeatsResponse);
+	rpc Subscribe (Subscription) returns (stream ReloadData);
+	rpc Unsubscribe (Subscription) returns (Empty);
+}
+
+message Subscription {
+	string id = 1;
+}
+
+message Empty {}
+
+message SeatsResponse {
+	int32 seats = 1;
+}
+
+message LoginRequest {
+	string username = 1;
+	string password = 2;
+}
+
+message LoginResponse {
+	bool ok = 1;
+}
+
+message DestinationDTO {
+	int32 id=1;
+	string name=2;
+}
+
+message TripDTO {
+	int32 id=1;
+	google.protobuf.Timestamp departure=2;
+	DestinationDTO destination = 3;
+	int32 leftSeats = 4;
+}
+
+message DestionationsResponse {
+	repeated DestinationDTO destinations = 1;
+}
+
+message DestinationsRequest {}
+
+message TripsRequest {
+	DestinationDTO destination = 1;
+	google.protobuf.Timestamp departure=2;
+}
+
+message TripsResponse {
+	repeated TripDTO trips = 1;
+}
+
+message ReservationsRequest {
+	TripDTO trip = 1;
+}
+
+message ReservationDTO {
+	int32 id = 1;
+	string clientName = 2;
+	int32 numberOfSeats = 3;
+	TripDTO trip = 4;
+}
+
+message ReservationsResponse {
+	repeated ReservationDTO reservations = 1;
+}
+
+message ReloadData {}

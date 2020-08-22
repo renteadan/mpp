@@ -1,6 +1,5 @@
 ﻿using csharp.Domain;
 using csharp.Networking;
-using csharp.Networking.Observer;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ using System.Runtime.Remoting.Channels.Tcp;
 namespace chsarp.Client
 {
 	[Serializable]
-	public class ClientListener : MarshalByRefObject, IObserver
+	public class ClientListener : MarshalByRefObject, IObserver, IClientWorker
 	{
 		private readonly IRemotableObject appState;
 		private readonly HashSet<IObserver> forms = new HashSet<IObserver>();

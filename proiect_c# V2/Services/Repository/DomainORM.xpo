@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<dataBaseObjectModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="22bbe698-afa5-4398-9c3c-eeaa032bae38" namespace="Services.Repository.ygfxpsvi" dataBaseShemaInfo="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" generateConnectionHelper="true" generateStoredProcedures="false" fieldNameCase="Unchanged" generateDefaultConstructors="false" useNameOf="true" connectionStringName="rogue.db.elephantsql.com" createdInVersion="20.1.3.0" generateJsonSerializationContractResolver="false" generateServiceCollectionExtensions="true" lastModifiedInVersion="20.1.3.0" name="ygfxpsvi" xmlns="http://schemas.microsoft.com/dsltools/ORMDataModel">
+  <classes>
+    <dataBaseObjectModelHasClasses Id="f1c77508-6489-48b2-a4f6-af88e491e2c3">
+      <xpObject Id="3fb6caf9-34cd-43ed-9554-dddfc876986a" name="AccountEntity" baseClass="XPLiteObject" userFileName="AccountEntity" designerFileName="AccountEntity.Designer" className="AccountEntity" virtualBaseClass="XPLiteObject" persistent="mpp.account" virtualName="AccountEntity">
+        <fields>
+          <generalXpObjectHasFields Id="fb456a82-41ef-47cc-ae60-1950da17247a">
+            <field Id="25bf7153-2964-4304-af64-ce909928407c" name="Id" columnType="Int32" key="true" isIdentity="true" persistent="id" virtualColumnType="Int32" delayedUpdateModifiedOnly="false" dbDefaultValue="nextval('mpp.user_id_seq'::regclass)" />
+          </generalXpObjectHasFields>
+          <generalXpObjectHasFields Id="dbafc01a-6b24-434d-8a3e-a317e5831e0e">
+            <field Id="815e406a-f827-46a0-a0e9-71a51e1197c8" name="Username" persistent="username" virtualColumnType="String" delayedUpdateModifiedOnly="false" size="Unlimited" />
+          </generalXpObjectHasFields>
+          <generalXpObjectHasFields Id="a4025f7c-eddc-4705-844a-d2fbe111ba63">
+            <field Id="47e892b5-6609-4a93-9477-98a828b5f0df" name="Password" persistent="password" virtualColumnType="String" delayedUpdateModifiedOnly="false" size="Unlimited" />
+          </generalXpObjectHasFields>
+        </fields>
+        <indexes>
+          <xpObjectHasIndexes Id="8518156d-d316-4bdc-8259-23000dbb4727">
+            <index Id="d5fe3ffb-b917-46a5-9636-581d7e6bc744" name="user_username_uindex" unique="true">
+              <fieldsInIndex>
+                <indexReferencesFields Id="22de148a-b120-4233-a4c8-6cd27457e80a">
+                  <fieldMoniker Id="815e406a-f827-46a0-a0e9-71a51e1197c8" />
+                </indexReferencesFields>
+              </fieldsInIndex>
+            </index>
+          </xpObjectHasIndexes>
+        </indexes>
+      </xpObject>
+    </dataBaseObjectModelHasClasses>
+    <dataBaseObjectModelHasClasses Id="469ebe42-8397-4a72-a84a-3369de1f4753">
+      <xpObject Id="e45388d8-96a9-4c68-b8e2-375be6bfce85" name="DestinationEntity" baseClass="XPLiteObject" userFileName="DestinationEntity" designerFileName="DestinationEntity.Designer" className="DestinationEntity" virtualBaseClass="XPLiteObject" persistent="mpp.destination" virtualName="DestinationEntity">
+        <fields>
+          <generalXpObjectHasFields Id="9515def2-a869-4ad8-92d7-ca9e3e42753b">
+            <field Id="6e655f34-5089-46cd-a810-4a82924781b8" name="Id" columnType="Int32" key="true" isIdentity="true" persistent="id" virtualColumnType="Int32" delayedUpdateModifiedOnly="false" dbDefaultValue="nextval('mpp.destination_id_seq'::regclass)" />
+          </generalXpObjectHasFields>
+          <generalXpObjectHasFields Id="a17fc2d7-86fe-4bea-a292-a83d69018978">
+            <field Id="cd76f2d2-3d27-47b4-ad8d-0cb357806e60" name="Name" persistent="name" virtualColumnType="String" delayedUpdateModifiedOnly="false" size="Unlimited" />
+          </generalXpObjectHasFields>
+        </fields>
+        <saTargets>
+          <simpleAssociation Id="08b2c78d-a851-44f8-a46a-ff62f26f6aeb" sourceCollectionName="Trips" name="TripEntityReferencesDestinationEntity" targetFieldName="Destination_id">
+            <xpObjectMoniker Id="b701c882-f8c7-4d60-860b-10f36f65e101" />
+          </simpleAssociation>
+        </saTargets>
+        <collectionFields>
+          <xpObjectHasCollectionFields Id="7e9bffd6-53fc-47fb-94eb-c9a95debc013">
+            <collectionField Id="cb031ac8-cf90-427f-8d93-a6175bdd9ec0" name="Trips" />
+          </xpObjectHasCollectionFields>
+        </collectionFields>
+      </xpObject>
+    </dataBaseObjectModelHasClasses>
+    <dataBaseObjectModelHasClasses Id="2250244c-8bfd-4bb7-9243-eceb671b6d60">
+      <xpObject Id="57c95c0d-9934-479d-81ec-44a73c787918" name="ReservationEntity" baseClass="XPLiteObject" userFileName="ReservationEntity" designerFileName="ReservationEntity.Designer" className="ReservationEntity" virtualBaseClass="XPLiteObject" persistent="mpp.reservation" virtualName="ReservationEntity">
+        <fields>
+          <generalXpObjectHasFields Id="48718978-6630-4bd9-9ff6-55cab1bd1b3a">
+            <field Id="1846c5a4-6be8-4817-b64b-8afcd4f1bce0" name="Id" columnType="Int32" key="true" isIdentity="true" persistent="id" virtualColumnType="Int32" delayedUpdateModifiedOnly="false" dbDefaultValue="nextval('mpp.reservation_id_seq'::regclass)" />
+          </generalXpObjectHasFields>
+          <generalXpObjectHasFields Id="2fc33854-843d-4cd9-ad09-b09114438174">
+            <field Id="6c08ef77-2c10-498f-88ff-50663ee4baf6" name="Client_name" persistent="client_name" virtualColumnType="String" delayedUpdateModifiedOnly="false" size="Unlimited" />
+          </generalXpObjectHasFields>
+          <generalXpObjectHasFields Id="8276ef4a-f3a1-4e5f-8771-a36148df3935">
+            <field Id="b2467150-0689-4487-99be-a83a195482f2" name="Seats_nr" columnType="Int32" persistent="seats_nr" virtualColumnType="Int32" delayedUpdateModifiedOnly="false" />
+          </generalXpObjectHasFields>
+          <generalXpObjectHasFields Id="54cc1bd0-1fd3-4c7c-baaf-6d6e01e2ddf3">
+            <field Id="96820e2a-8cb7-48c2-95cd-d5e9707944c9" name="Trip_id" columnType="Int32" persistent="trip_id" virtualColumnType="TripEntity" logicalType="TripEntity" delayedUpdateModifiedOnly="false" />
+          </generalXpObjectHasFields>
+        </fields>
+      </xpObject>
+    </dataBaseObjectModelHasClasses>
+    <dataBaseObjectModelHasClasses Id="8927b7fc-97a9-4ad3-91f9-ff583d4b6f05">
+      <xpObject Id="b701c882-f8c7-4d60-860b-10f36f65e101" name="TripEntity" baseClass="XPLiteObject" userFileName="TripEntity" designerFileName="TripEntity.Designer" className="TripEntity" virtualBaseClass="XPLiteObject" persistent="mpp.trip" virtualName="TripEntity">
+        <fields>
+          <generalXpObjectHasFields Id="9b27b000-7315-4e95-8568-6ded1b503273">
+            <field Id="d21df1ae-94e1-48c8-a864-cd083efe6f2c" name="Id" columnType="Int32" key="true" isIdentity="true" persistent="id" virtualColumnType="Int32" delayedUpdateModifiedOnly="false" dbDefaultValue="nextval('mpp.trip_id_seq'::regclass)" />
+          </generalXpObjectHasFields>
+          <generalXpObjectHasFields Id="7b8dbdb0-ee51-4662-b19c-39b87edd2d45">
+            <field Id="4b516803-2e88-4507-a388-8f3934d1b7e0" name="Departure" columnType="DateTime" persistent="departure" virtualColumnType="DateTime" delayedUpdateModifiedOnly="false" />
+          </generalXpObjectHasFields>
+          <generalXpObjectHasFields Id="1aefa32c-b714-4f9a-abdd-f7cea4c6ec9a">
+            <field Id="e7ab91c6-1dd7-48f9-9431-80ac773af1ad" name="Destination_id" columnType="Int32" persistent="destination_id" virtualColumnType="DestinationEntity" logicalType="DestinationEntity" delayedUpdateModifiedOnly="false" />
+          </generalXpObjectHasFields>
+        </fields>
+        <saTargets>
+          <simpleAssociation Id="663dcff9-68e9-4978-98fb-4cd382877861" sourceCollectionName="Reservations" name="ReservationEntityReferencesTripEntity" targetFieldName="Trip_id">
+            <xpObjectMoniker Id="57c95c0d-9934-479d-81ec-44a73c787918" />
+          </simpleAssociation>
+        </saTargets>
+        <collectionFields>
+          <xpObjectHasCollectionFields Id="0e2eec98-9a9c-44bd-9064-6dc92e9360df">
+            <collectionField Id="df3200a4-9da7-4bbc-addc-be25ec92a451" name="Reservations" />
+          </xpObjectHasCollectionFields>
+        </collectionFields>
+      </xpObject>
+    </dataBaseObjectModelHasClasses>
+  </classes>
+</dataBaseObjectModel>

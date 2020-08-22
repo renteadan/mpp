@@ -1,5 +1,4 @@
 ﻿using csharp.Domain;
-using csharp.Networking.Observer;
 using csharp.Services.Service;
 using System;
 using System.Collections.Generic;
@@ -17,8 +16,6 @@ namespace csharp.Networking
 		public RemotableObject()
 		{
 		}
-
-		public event EventHandler<ReloadDataEventArgs> ReloadData;
 
 		public List<Destination> GetDestinations()
 		{
